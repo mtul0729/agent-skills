@@ -1,0 +1,4 @@
+interface:
+  display_name: "JJ Local Help"
+  short_description: "Live local help for Jujutsu workflows"
+  default_prompt: "Use $jj-local-help to answer this Jujutsu command or workflow question from the locally installed jj help output."
