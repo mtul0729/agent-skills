@@ -1,0 +1,4 @@
+interface:
+  display_name: "JJ Atomic Workflow"
+  short_description: "Maintain atomic Jujutsu changes"
+  default_prompt: "Use $jj-atomic-workflow to keep Jujutsu changes atomic while you work in this repository."
