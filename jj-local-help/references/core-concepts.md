@@ -1,19 +1,48 @@
 # jj Core Concepts (Stable Notes)
 
-Use this file only for stable mental models. For options, flags, and exact behavior, query live help.
+Use this file for stable mental models only. For exact flags, option names,
+keyword topics, and installed-version behavior, query live local help.
+
+## How to use this file
+
+- Read this early when a question depends on `jj` mental models instead of only
+  command syntax.
+- Use it to explain concepts, connect related ideas, and correct Git-shaped
+  assumptions.
+- If this file and live help appear to disagree, trust live help and mention
+  that these notes may lag behind the installed version.
+
+## Concept map
+
+`jj` treats your working copy as a real revision (`@`), not as a staging area.
+A logical change can be rewritten through many commits over time. Bookmarks are
+movable names for revisions used for collaboration. The operation log tracks the
+history of repository operations, which makes many mistakes recoverable. Revsets
+and filesets are the query languages you use to select revisions and paths.
 
 ## Help-system-first navigation
 
 ### What it is
-- `jj` has a built-in command help system and keyword topic help.
 
-### Why it matters
-- It is the most reliable source for the currently installed version.
+`jj` ships with built-in command help and keyword help.
 
-### Common pitfalls
-- Skipping `jj help help` and missing how `-k/--keyword` works.
+### Git-shaped assumption to drop
 
-### Validate with commands
+Do not assume that external docs or memory are more accurate than local help for
+the installed version.
+
+### Why it matters in daily use
+
+Many `jj` questions are really version or syntax questions. Local help answers
+those more reliably than a static skill can.
+
+### Common misread
+
+People often run `jj help <thing>` without first learning how keyword help works
+and then miss useful topics behind `jj help -k ...`.
+
+### Smallest useful commands
+
 - `jj help`
 - `jj help help`
 - `jj help -k glossary`
@@ -21,63 +50,85 @@ Use this file only for stable mental models. For options, flags, and exact behav
 ## Working copy as commit (`@`)
 
 ### What it is
-- The working copy is represented by a real commit (`@`) instead of a staging area.
 
-### Why it matters
-- Editing and history operations become part of normal daily workflow.
+Your working copy lives in a real revision named `@`. It is not a Git-style
+index plus working tree split.
 
-### Common pitfalls
-- Expecting Git-style staged/unstaged flow and misreading what `@` represents.
+### Git-shaped assumption to drop
 
-### Validate with commands
+Do not look for a staged versus unstaged boundary by default. In `jj`, the
+working state itself is already represented in history.
+
+### Why it matters in daily use
+
+Commands like `desc`, `new`, `split`, `show`, and `log` all make more sense
+once you understand that `@` is a revision you are actively editing.
+
+### Common misread
+
+People often treat `@` as "my dirty workspace" instead of "the current working
+copy commit". That leads to confusion about why history-editing commands feel so
+normal in `jj`.
+
+### Smallest useful commands
+
 - `jj status`
 - `jj log -r @`
 - `jj show @`
 
-## Change vs commit evolution
+## Change vs commit
 
 ### What it is
-- A logical change can evolve through multiple rewritten commits over time.
 
-### Why it matters
-- Rewrite operations preserve intent while refining history.
+A change is the logical unit of intent. A commit is one concrete revision in the
+history of that change. The same change can be rewritten into new commits over
+time.
 
-### Common pitfalls
-- Assuming rewritten commits are always equivalent to brand-new unrelated work.
+### Git-shaped assumption to drop
 
-### Validate with commands
-- `jj evolog`
+Do not assume that a new commit ID always means brand-new unrelated work. In
+`jj`, rewrites often preserve the same logical change while refining its shape.
+
+### Why it matters in daily use
+
+This is why `jj` workflows can keep improving a change's description, contents,
+or parentage without treating every rewrite as a separate conceptual task.
+
+### Common misread
+
+People often collapse "change" and "commit" into one concept and then get lost
+when rebasing, splitting, or rewriting produces new commit IDs.
+
+### Smallest useful commands
+
 - `jj log`
-
-## Rewrite-first workflow
-
-### What it is
-- Commands like `new`, `edit`, `describe`, `squash`, `split`, and `rebase` are primary tools.
-
-### Why it matters
-- Iterative cleanup before publish is a core workflow, not an edge case.
-
-### Common pitfalls
-- Treating history rewrite as exceptional and avoiding essential cleanup.
-
-### Validate with commands
-- `jj new --help`
-- `jj rebase --help`
-- `jj squash --help`
-- `jj split --help`
+- `jj evolog`
 
 ## Operation log and recovery
 
 ### What it is
-- `jj` tracks operations and supports moving backward/forward through operation history.
 
-### Why it matters
-- Many mistakes are recoverable with operation-level undo/redo.
+`jj` records operations as well as revisions. This gives you a second recovery
+layer above ordinary commit history.
 
-### Common pitfalls
-- Trying to recover only via commit-level reasoning and ignoring operation history.
+### Git-shaped assumption to drop
 
-### Validate with commands
+Do not reason only at the commit level. A bad rebase, undoable rewrite, or
+accidental history edit may be easiest to recover from through operation
+history, not by manually reconstructing commits.
+
+### Why it matters in daily use
+
+This makes `jj` much more forgiving during history editing. Recovery is often a
+normal workflow step rather than a panic path.
+
+### Common misread
+
+People sometimes search the visible revision graph for lost work when the faster
+answer is in the operation log.
+
+### Smallest useful commands
+
 - `jj operation log`
 - `jj undo --help`
 - `jj redo --help`
@@ -85,76 +136,114 @@ Use this file only for stable mental models. For options, flags, and exact behav
 ## Bookmarks vs Git branches
 
 ### What it is
-- Bookmarks are movable names for revisions and serve branch-like collaboration roles.
 
-### Why it matters
-- Remote push/fetch workflow in `jj` is centered around bookmarks.
+Bookmarks are movable names attached to revisions. They fill the branch-like
+role in collaboration and remote synchronization.
 
-### Common pitfalls
-- Assuming one-to-one mental mapping with every Git branch workflow detail.
+### Git-shaped assumption to drop
 
-### Validate with commands
+Do not expect every Git branch habit to transfer directly. A bookmark is not
+just a renamed Git branch concept.
+
+### Why it matters in daily use
+
+Push and fetch workflows in `jj` revolve around bookmarks, so understanding them
+is essential for collaboration and remote state tracking.
+
+### Common misread
+
+People often assume bookmarks are a cosmetic alias over Git branches and then
+miss how `jj git push` and remote bookmark state are modeled.
+
+### Smallest useful commands
+
 - `jj bookmark list`
 - `jj git push --help`
 - `jj git fetch --help`
 
+## Immutable revisions and policy constraints
+
+### What it is
+
+Some revisions are protected from rewrite by repository policy or configuration.
+
+### Git-shaped assumption to drop
+
+Do not assume a failed rewrite means the command syntax was wrong. The command
+may be fine while the target revision is intentionally protected.
+
+### Why it matters in daily use
+
+When `rebase`, `squash`, or similar commands fail, policy constraints can be the
+real explanation. That changes troubleshooting from "what flag did I miss?" to
+"what is allowed to move here?"
+
+### Common misread
+
+People debug immutable-revision failures as command mistakes and never inspect
+the repository's rewrite policy.
+
+### Smallest useful commands
+
+- `jj config list --help`
+- `jj rebase --help`
+
 ## Revsets and selection language
 
 ### What it is
-- Revsets are expressions for selecting revision sets.
+
+Revsets are expressions for selecting revisions.
 
 ### Why it matters
-- Most history commands depend on revset selection quality.
 
-### Common pitfalls
-- Using command defaults blindly instead of precise revset filters.
+Many history commands become safer and clearer when you choose revisions
+precisely instead of relying on broad defaults.
 
-### Validate with commands
+### Common misread
+
+Treating revsets like ad hoc shell filters instead of a query language.
+
+### Smallest useful commands
+
 - `jj help -k revsets`
 - `jj log -r ::`
-
-## Templates and output customization
-
-### What it is
-- Templates control how command output is rendered.
-
-### Why it matters
-- Better output improves review and debugging workflows.
-
-### Common pitfalls
-- Editing templates without checking built-in keywords and template functions first.
-
-### Validate with commands
-- `jj help -k templates`
-- `jj log -T`
 
 ## Filesets and path selection language
 
 ### What it is
-- Filesets are expressions for selecting sets of files/paths.
+
+Filesets are expressions for selecting files and paths.
 
 ### Why it matters
-- Path-based filtering is key for targeted operations and queries.
 
-### Common pitfalls
-- Treating filesets as simple globbing and missing expression semantics.
+They enable precise path-based filtering without reducing everything to simple
+glob syntax.
 
-### Validate with commands
+### Common misread
+
+Expecting plain globbing semantics and missing fileset expression rules.
+
+### Smallest useful commands
+
 - `jj help -k filesets`
 - `jj file list --help`
 
-## Immutable revisions and policy constraints
+## Templates and output customization
 
 ### What it is
-- Some revisions are configured as immutable and protected from rewrite by default.
+
+Templates control how command output is rendered.
 
 ### Why it matters
-- Rewrite commands can fail due to policy, not syntax.
 
-### Common pitfalls
-- Debugging as a command failure without checking immutable policy/config.
+A better template often makes review and debugging faster than post-processing
+default output.
 
-### Validate with commands
-- `jj --help`
-- `jj config list --help`
-- `jj rebase --help`
+### Common misread
+
+Editing templates before checking built-in keywords and template functions.
+
+### Smallest useful commands
+
+- `jj help -k templates`
+- `jj log -T`

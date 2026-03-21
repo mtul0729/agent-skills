@@ -1,6 +1,6 @@
 ---
 name: jj-local-help
-description: Resolve Jujutsu (`jj`) command usage, flags, errors, and workflow questions from the locally installed `jj` help system instead of hardcoding unstable docs. Use when Codex needs current `jj` command syntax, keyword help, troubleshooting guidance, or concrete `jj` workflow advice.
+description: Resolve Jujutsu (`jj`) command usage, flags, errors, keyword help, and version-specific semantics from the locally installed `jj` help system instead of hardcoding unstable docs. Use when Codex needs current `jj` command syntax, subcommands, troubleshooting guidance, or installed-version behavior.
 ---
 
 ## Reliability Policy (Important)
@@ -15,20 +15,19 @@ For command behavior:
 
 ## Help System Bootstrap Workflow (Always First)
 
-Resolve every relative path in this skill against the skill directory, not the
-current workspace root. Change into `skills/jj-local-help/` before invoking
-bundled scripts, or use an absolute path. Do not assume that a workspace has a
-top-level `skills/` directory unless it is actually present.
-
 Run these before answering command or concept questions:
 
 ```bash
-./scripts/jj_help.sh help
-./scripts/jj_help.sh help help
+jj help
+jj help help
 ```
 
 Use the first command to confirm top-level subcommands for the installed version.
 Use the second command to confirm help semantics and keyword topics (`-k/--keyword`).
+
+Then read `references/core-concepts.md` early to refresh the stable `jj` mental
+model before routing the specific query. Treat it as orientation, not as the
+source of exact syntax or version-specific behavior.
 
 ## Query Routing Workflow
 
@@ -38,42 +37,66 @@ Use the second command to confirm help semantics and keyword topics (`-k/--keywo
 - Concept-oriented: "What does X mean in jj?"
 - Troubleshooting-oriented: "Why did command X fail?"
 
+Before going deeper, skim `references/core-concepts.md` if the question depends
+on `jj` mental models such as `@`, change vs commit, bookmarks, revsets,
+operation log, or immutable revisions.
+
 ### 2) Route command-oriented requests
 
 Resolve the command path, then fetch live help:
 
 ```bash
-./scripts/jj_help.sh rebase
-./scripts/jj_help.sh git push
-./scripts/jj_help.sh operation log
+jj rebase --help
+jj git push --help
+jj operation log --help
 ```
+
+Default source order for command questions:
+
+- Exact command syntax, flags, subcommands -> `jj <command> --help`
+- Keyword-driven docs topics -> `jj help -k <topic>`
+- Extra explanation of stable concepts -> `references/core-concepts.md`
 
 ### 3) Route concept-oriented requests
 
-First try keyword help:
+Use `references/core-concepts.md` first to frame the answer, then confirm the
+installed version's terminology and details with keyword help:
 
 ```bash
-./scripts/jj_help.sh help -k tutorial
-./scripts/jj_help.sh help -k glossary
-./scripts/jj_help.sh help -k config
-./scripts/jj_help.sh help -k revsets
-./scripts/jj_help.sh help -k templates
-./scripts/jj_help.sh help -k filesets
+jj help -k tutorial
+jj help -k glossary
+jj help -k config
+jj help -k revsets
+jj help -k templates
+jj help -k filesets
 ```
 
 Treat `jj help -k` output as the primary source of truth for those topics.
-Use `references/core-concepts.md` only to:
+Use `references/core-concepts.md` to:
+- surface the right mental model early
 - organize and simplify explanations
 - connect concepts to practical command workflows
 - cover concepts not directly exposed by `-k` topics
 
 When both are available, cite and follow `jj help -k` first, then add a concise synthesis from `core-concepts.md`.
 
+Default source order for concept questions:
+
+- Stable mental model and Git-difference framing -> `references/core-concepts.md`
+- Installed terminology and detailed topic docs -> `jj help -k <topic>`
+- Exact command syntax mentioned in the explanation -> `jj <command> --help`
+
 ### 4) Route troubleshooting requests
 
 - Check command help for expected flags/arguments.
 - Point out likely mismatch with current version/configuration.
 - Suggest exact follow-up command(s) to validate state.
+
+Default source order for troubleshooting:
+
+- Expected syntax and flags -> `jj <command> --help`
+- Related topic behavior or policy -> `jj help -k <topic>`
+- Stable concept framing when needed -> `references/core-concepts.md`
 
 ## Concept Priority and Mapping
 
@@ -86,6 +109,23 @@ Use this mapping for concept-first questions:
 - Output customization -> `templates`
 - Path/file selection expressions -> `filesets`
 
+## Scope Boundaries (Required)
+
+Use this skill for:
+
+- installed-version command syntax and flags
+- subcommand discovery
+- keyword topic lookup from local help
+- troubleshooting command usage or behavior mismatches
+- explaining stable `jj` concepts with local help as the source of truth
+
+Do not use this skill for:
+
+- deciding change-boundary strategy such as when to `desc`, `new`, `split`, or
+  `commit`; use `jj-atomic-workflow`
+- repository-specific workflow policy; use the repository `AGENTS.md`
+- inventing command syntax from memory when local help is available
+
 ## Response Contract (Required)
 
 For every response, use this order:
@@ -94,14 +134,29 @@ For every response, use this order:
 3. 1-3 runnable commands.
 4. Caveat or pitfall note if relevant.
 
-For concept answers, default to three layers:
+Prefer the smallest correct command example first.
+Do not list multiple equivalent command variants unless the distinction matters
+for correctness or the user explicitly asks for alternatives.
+
+For concept answers, default to four layers:
 1. What it is.
-2. Why it matters.
-3. Common pitfall or boundary.
+2. How it differs from common Git assumptions.
+3. Why it matters.
+4. Common pitfall or boundary.
 
 Do not dump full docs. Extract only the parts needed for the specific question.
 
 ## Rewrite Safety Guardrails (Required)
+
+Execution model:
+- Do not run mutating `jj` commands in parallel. Commands such as `jj commit`,
+  `jj new`, `jj desc`, `jj rebase`, `jj squash`, `jj abandon`, `jj resolve`,
+  and `jj git push` must be executed one at a time.
+- If a workflow requires multiple mutating `jj` commands, run them serially in a
+  single shell session and stop on failure. Prefer a single command string with
+  `&&` over parallel tool calls that can race with each other.
+- Only read-only discovery commands such as `jj --version`, `jj status`, and
+  `jj help ...` may be parallelized.
 
 Flag usage principle:
 - Prefer default behavior or the minimal argument set.

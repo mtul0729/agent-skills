@@ -16,10 +16,11 @@ Use this skill for change-boundary strategy while working:
 
 ### `jj-local-help`
 
-Use this skill for runtime command help:
+Use this skill for runtime command, concept, and troubleshooting help:
 
 - confirm exact `jj` command syntax
 - confirm flags and subcommands
+- explain stable `jj` concepts with local help as the source of truth
 - answer version-specific behavior questions from local `jj help`
 - troubleshoot command usage without hardcoding unstable docs
 
@@ -27,7 +28,11 @@ Use this skill for runtime command help:
 
 Use `jj-atomic-workflow` when the question is "how should I manage changes while I work?"
 
-Use `jj-local-help` when the question is "what does this `jj` command do in the installed version?"
+Use `jj-atomic-workflow` when the question is specifically about choosing among
+`jj desc`, `jj new`, `jj split`, and `jj commit`.
+
+Use `jj-local-help` when the question is "what does this `jj` command or concept
+mean in the installed version?"
 
 Use both together when workflow decisions and exact command semantics both matter.
 
