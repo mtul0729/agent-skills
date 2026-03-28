@@ -6,12 +6,13 @@ This directory contains two complementary Jujutsu skills.
 
 ### `jj-atomic-workflow`
 
-Use this skill for change-boundary strategy while working:
+Use this skill to decide what to do with the current `@` while working:
 
 - keep `@` aligned with one coherent intent
 - decide when to update descriptions
-- decide when to start a new change
+- decide when to start a fresh change
 - decide when a mixed change should be split
+- spot when boundary drift is already visible
 - treat `jj commit` as a low-frequency convenience command rather than the center of the workflow
 
 ### `jj-local-help`
@@ -30,6 +31,8 @@ Use `jj-atomic-workflow` when the question is "how should I manage changes while
 
 Use `jj-atomic-workflow` when the question is specifically about choosing among
 `jj desc`, `jj new`, `jj split`, and `jj commit`.
+
+Use `jj-atomic-workflow` when the question is "what should I do with the current `@`?"
 
 Use `jj-local-help` when the question is "what does this `jj` command or concept
 mean in the installed version?"

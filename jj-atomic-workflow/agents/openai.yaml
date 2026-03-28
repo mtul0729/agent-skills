@@ -1,4 +1,4 @@
 interface:
   display_name: "JJ Atomic Workflow"
-  short_description: "Maintain atomic Jujutsu changes"
-  default_prompt: "Use $jj-atomic-workflow to keep Jujutsu changes atomic while you work in this repository."
+  short_description: "Manage atomic JJ change boundaries"
+  default_prompt: "Use $jj-atomic-workflow to decide what to do with the current `@` change and when to use `jj desc`, `jj new`, `jj split`, or `jj commit`."
