@@ -3,6 +3,12 @@
 This directory contains general-purpose Jujutsu skills for agents working in
 jj-backed repositories.
 
+## Setup Note
+
+These skills assume the repository is already managed by jj. For an existing Git
+repository, initialize jj once with `jj git init`; this is a one-time setup step,
+not part of the normal agent workflow.
+
 ## Skills
 
 ### `jj-atomic-workflow`
