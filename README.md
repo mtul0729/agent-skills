@@ -1,6 +1,6 @@
 # JJ Skills
 
-This directory contains reusable Jujutsu skills for agents working in
+This directory contains general-purpose Jujutsu skills for agents working in
 jj-backed repositories.
 
 ## Skills
@@ -50,6 +50,6 @@ When working in this jj repository, use the `jj-atomic-workflow` skill for chang
 
 ## Portability Note
 
-These skills provide reusable defaults, not a complete repository policy.
+These skills provide general-purpose guidance, not a complete repository policy.
 Repository `AGENTS.md` files and local contributor policies should override
 skill defaults where they conflict.
