@@ -39,7 +39,7 @@ those more reliably than a static skill can.
 ### Common misread
 
 People often run `jj help <thing>` without first learning how keyword help works
-and then miss useful topics behind `jj help -k ...`.
+and then miss useful topics behind `jj help -k <topic>`.
 
 ### Smallest useful commands
 
@@ -158,6 +158,7 @@ miss how `jj git push` and remote bookmark state are modeled.
 ### Smallest useful commands
 
 - `jj bookmark list`
+- `jj help -k bookmarks`
 - `jj git push --help`
 - `jj git fetch --help`
 
@@ -206,7 +207,7 @@ Treating revsets like ad hoc shell filters instead of a query language.
 ### Smallest useful commands
 
 - `jj help -k revsets`
-- `jj log -r ::`
+- `jj log -r '::@'`
 
 ## Filesets and path selection language
 
@@ -242,8 +243,10 @@ default output.
 ### Common misread
 
 Editing templates before checking built-in keywords and template functions.
+Running bare `jj log -T` can print a useful alias hint in current `jj`, but it
+does so after reporting that the required template argument is missing.
 
 ### Smallest useful commands
 
 - `jj help -k templates`
-- `jj log -T`
+- `jj log -T builtin_log_oneline`

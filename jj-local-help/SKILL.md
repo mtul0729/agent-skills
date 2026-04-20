@@ -11,7 +11,7 @@ For command behavior:
 1. Prefer live local help text from `jj`.
 2. Use this skill's concept notes only for stable mental models.
 3. If concept notes conflict with live help, trust live help and state that notes may lag behind the installed version.
-4. For keyword topics (`jj help -k ...`), treat keyword help as authoritative over `references/core-concepts.md`.
+4. For keyword topics (`jj help -k <topic>`), treat keyword help as authoritative over `references/core-concepts.md`.
 
 ## Help System Bootstrap Workflow (Always First)
 
@@ -65,20 +65,21 @@ installed version's terminology and details with keyword help:
 ```bash
 jj help -k tutorial
 jj help -k glossary
+jj help -k bookmarks
 jj help -k config
 jj help -k revsets
 jj help -k templates
 jj help -k filesets
 ```
 
-Treat `jj help -k` output as the primary source of truth for those topics.
+Treat `jj help -k <topic>` output as the primary source of truth for those topics.
 Use `references/core-concepts.md` to:
 - surface the right mental model early
 - organize and simplify explanations
 - connect concepts to practical command workflows
 - cover concepts not directly exposed by `-k` topics
 
-When both are available, cite and follow `jj help -k` first, then add a concise synthesis from `core-concepts.md`.
+When both are available, cite and follow `jj help -k <topic>` first, then add a concise synthesis from `core-concepts.md`.
 
 Default source order for concept questions:
 
@@ -104,6 +105,7 @@ Use this mapping for concept-first questions:
 
 - Getting started and learning path -> `tutorial`
 - Term meaning or ambiguous wording -> `glossary`
+- Bookmark, branch-like names, and remote/tracked bookmark behavior -> `bookmarks`
 - Behavior differences or policy configuration -> `config`
 - Revision selection expressions -> `revsets`
 - Output customization -> `templates`
@@ -179,4 +181,4 @@ On conflict:
   - `jj --help`
   - `jj help help`
   - `jj help <command>`
-  - `jj help -k <keyword>` (for docs topics such as `tutorial`, `glossary`, `config`, `revsets`, `templates`, `filesets`)
+  - `jj help -k <keyword>` (for docs topics such as `tutorial`, `glossary`, `bookmarks`, `config`, `revsets`, `templates`, `filesets`)
