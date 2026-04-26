@@ -26,6 +26,8 @@ At the start of work, inspect the current `@` before choosing a command.
 
 - Always start with `jj status`.
 - If `@` has content or the intent is unclear, inspect `jj diff --stat`.
+- When full diff content needs to be read by an agent or tooling, prefer
+  `jj diff --git` over the default human-oriented diff format.
 - If the description, parent, or current graph position affects the boundary
   decision, inspect `jj log -r @`.
 - If `@` still represents one coherent intent but the description is stale, use `jj desc`.
