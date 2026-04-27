@@ -51,7 +51,7 @@ To guide agents toward these skills, repository `AGENTS.md` files can include a
 short note such as:
 
 ```markdown
-When working in this jj repository, use the `jj-atomic-workflow` skill for change-boundary decisions and the `jj-local-help` skill for command syntax, flags, and installed-version behavior.
+When working in this jj repository, use the `jj-atomic-workflow` skill for change-boundary decisions and the `jj-local-help` skill for command syntax, flags, installed-version behavior, and safe handling of concurrent/stale/reconciled repo state; only parallelize read-only `jj` commands, treat all other `jj` commands as serial, and refresh repo state after stale/concurrent/reconcile/divergent output.
 ```
 
 ## Portability Note
