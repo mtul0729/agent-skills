@@ -148,6 +148,15 @@ For concept answers, default to four layers:
 
 Do not dump full docs. Extract only the parts needed for the specific question.
 
+## Interactive Command Guidance
+
+When recommending commands for scripting or automation:
+- Prefer non-interactive flags (`-m`, path arguments) over interactive modes
+  (`-i`, bare `jj describe`, `jj split` without paths).
+- For purely TUI commands like `jj arrange`, there is no non-interactive
+  alternative. Recommend the equivalent non-interactive command instead
+  (e.g. `jj rebase` with explicit `-r`/`-s`/`-b` and `-A`/`-B`/`-o` flags).
+
 ## Rewrite Safety Guardrails (Required)
 
 Execution model:

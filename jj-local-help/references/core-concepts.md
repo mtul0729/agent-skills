@@ -250,3 +250,17 @@ does so after reporting that the required template argument is missing.
 
 - `jj help -k templates`
 - `jj log -T builtin_log_oneline`
+
+## Interactive vs non-interactive commands
+
+### What it is
+
+Some `jj` commands have both interactive and non-interactive modes (e.g.
+`jj split` accepts `-i` for interactive or path arguments for non-interactive).
+A few commands are purely interactive TUI with no non-interactive fallback —
+`jj arrange` is the main example.
+
+### Common misread
+
+Treating purely TUI commands (like `jj arrange`) as if they have a non-
+interactive mode, or assuming interactive-mode commands cannot be scripted.
