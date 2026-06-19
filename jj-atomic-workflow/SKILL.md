@@ -60,6 +60,16 @@ At the start of work, inspect the current `@` before choosing a command.
 - If the split boundary is unclear, report the candidate intents and pause for
   clarification before running an interactive or path-based split.
 
+### `jj absorb`
+
+- Use when working-copy changes belong in a previous commit, not in `@`.
+- Automatically moves each change in the working copy into the ancestor commit
+  where that line was last changed.
+- Prefer this over manually identifying the target commit and running
+  `jj squash --into` when the fixup is small and the target is unambiguous.
+- Does not move changes if multiple ancestor commits modified the same line;
+  in that case, fall back to `jj squash --into <target>` with an explicit target.
+
 ### `jj commit`
 
 - Treat as a low-frequency convenience command, not the center of the workflow.
