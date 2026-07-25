@@ -18,8 +18,8 @@ For command behavior:
 Run these before answering command or concept questions:
 
 ```bash
-jj help
-jj help help
+jj --no-pager help
+jj --no-pager help help
 ```
 
 Use the first command to confirm top-level subcommands for the installed version.
@@ -46,9 +46,9 @@ operation log, or immutable revisions.
 Resolve the command path, then fetch live help:
 
 ```bash
-jj rebase --help
-jj git push --help
-jj operation log --help
+jj --no-pager rebase --help
+jj --no-pager git push --help
+jj --no-pager operation log --help
 ```
 
 Default source order for command questions:
@@ -63,13 +63,13 @@ Use `references/core-concepts.md` first to frame the answer, then confirm the
 installed version's terminology and details with keyword help:
 
 ```bash
-jj help -k tutorial
-jj help -k glossary
-jj help -k bookmarks
-jj help -k config
-jj help -k revsets
-jj help -k templates
-jj help -k filesets
+jj --no-pager help -k tutorial
+jj --no-pager help -k glossary
+jj --no-pager help -k bookmarks
+jj --no-pager help -k config
+jj --no-pager help -k revsets
+jj --no-pager help -k templates
+jj --no-pager help -k filesets
 ```
 
 Treat `jj help -k <topic>` output as the primary source of truth for those topics.
@@ -166,8 +166,8 @@ Execution model:
 - If a workflow requires multiple mutating `jj` commands, run them serially in a
   single shell session and stop on failure. Prefer a single command string with
   `&&` over parallel tool calls that can race with each other.
-- Only read-only discovery commands such as `jj --version`, `jj status`, and
-  `jj help ...` may be parallelized.
+- Only read-only discovery commands such as `jj --version`, `jj --no-pager status`,
+  and `jj --no-pager help ...` may be parallelized.
 
 Flag usage principle:
 - Prefer default behavior or the minimal argument set.
@@ -187,7 +187,7 @@ On conflict:
 
 - If local `jj` is unavailable, say that live help cannot be queried and provide best-effort guidance with an explicit uncertainty note.
 - If command lookup fails, ask a focused follow-up or suggest discovery:
-  - `jj --help`
-  - `jj help help`
-  - `jj help <command>`
-  - `jj help -k <keyword>` (for docs topics such as `tutorial`, `glossary`, `bookmarks`, `config`, `revsets`, `templates`, `filesets`)
+  - `jj --no-pager --help`
+  - `jj --no-pager help help`
+  - `jj --no-pager help <command>`
+  - `jj --no-pager help -k <keyword>` (for docs topics such as `tutorial`, `glossary`, `bookmarks`, `config`, `revsets`, `templates`, `filesets`)

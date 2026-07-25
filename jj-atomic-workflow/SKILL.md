@@ -24,12 +24,12 @@ Use `jj-local-help` to confirm exact `jj` command syntax, flags, and current-ver
 
 At the start of work, inspect the current `@` before choosing a command.
 
-- Always start with `jj status`.
-- If `@` has content or the intent is unclear, inspect `jj diff --stat`.
+- Always start with `jj --no-pager status`.
+- If `@` has content or the intent is unclear, inspect `jj --no-pager diff --stat`.
 - When full diff content needs to be read by an agent or tooling, prefer
-  `jj diff --git` over the default human-oriented diff format.
+  `jj --no-pager diff --git` over the default human-oriented diff format.
 - If the description, parent, or current graph position affects the boundary
-  decision, inspect `jj log -r @`.
+  decision, inspect `jj --no-pager log -r @`.
 - If `@` still represents one coherent intent but the description is stale, use `jj desc`.
 - If `@` is coherent and the next task is different, use `jj new` before mixing in unrelated work.
 - If `@` already contains multiple intents, identify the separate intents immediately.
@@ -133,7 +133,7 @@ during follow-up work.
 - The new `@` should be empty and ready for the next unrelated task.
 - Skip the final `jj new` only if the user explicitly asks to stay on the
   completed change or the next action continues the same intent.
-- Verify the final state with `jj status`.
+- Verify the final state with `jj --no-pager status`.
 
 ## Quick Examples
 
