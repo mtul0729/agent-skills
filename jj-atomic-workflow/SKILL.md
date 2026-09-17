@@ -67,6 +67,8 @@ At the start of work, inspect the current `@` before choosing a command.
   where that line was last changed.
 - Prefer this over manually identifying the target commit and running
   `jj squash --into` when the fixup is small and the target is unambiguous.
+- Use `jj absorb -i` (or `--tool <NAME>`) when only part of the working-copy
+  change should be absorbed; unselected hunks stay in the source revision.
 - Does not move changes if multiple ancestor commits modified the same line;
   in that case, fall back to `jj squash --into <target>` with an explicit target.
 
