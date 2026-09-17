@@ -140,6 +140,11 @@ answer is in the operation log.
 Bookmarks are movable names attached to revisions. They fill the branch-like
 role in collaboration and remote synchronization.
 
+Tags are similar names, and in current `jj` they are fetched and tracked like
+bookmarks: a remote tag is fetched as `<name>@<remote>` and is tracked by a
+local tag of the same name. Treat remote tag state with the same care as remote
+bookmark state.
+
 ### Git-shaped assumption to drop
 
 Do not expect every Git branch habit to transfer directly. A bookmark is not
@@ -158,9 +163,42 @@ miss how `jj git push` and remote bookmark state are modeled.
 ### Smallest useful commands
 
 - `jj bookmark list`
+- `jj tag list`
 - `jj help -k bookmarks`
 - `jj git push --help`
 - `jj git fetch --help`
+
+## Divergent changes and convergence
+
+### What it is
+
+A single change can have more than one visible commit at the same time. `jj`
+calls this divergence, and it usually comes from concurrent work on the same
+change (for example, two workspaces or a synchronized remote). `jj converge`
+replaces the divergent commits with a single commit, using heuristics and
+falling back to prompting when they are inconclusive.
+
+### Git-shaped assumption to drop
+
+Do not assume a change ID maps to exactly one commit forever, and do not treat
+divergence as something to fix by deleting one side by hand.
+
+### Why it matters in daily use
+
+Divergence is how `jj` surfaces concurrent edits to the same change instead of
+silently discarding one side. Recognizing it turns a confusing "duplicate
+commit" into a normal reconciliation step.
+
+### Common misread
+
+People read divergent commits as corrupted duplicates and delete one, instead
+of combining them with `jj converge` or inspecting them with `jj log`/`jj
+evolog`.
+
+### Smallest useful commands
+
+- `jj log -r 'divergent()'`
+- `jj converge --help`
 
 ## Immutable revisions and policy constraints
 
