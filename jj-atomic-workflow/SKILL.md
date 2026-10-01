@@ -34,7 +34,7 @@ At the start of work, inspect the current `@` before choosing a command.
 - If `@` is coherent and the next task is different, use `jj new` before mixing in unrelated work.
 - If `@` already contains multiple intents, identify the separate intents immediately.
   Use `jj split` once the split boundary is clear.
-- Use `jj commit` only when describing the current change and starting the next one are naturally one step.
+- Use `jj commit` when describing the current change and starting the next one belong in one step.
 
 ## Command Roles
 
@@ -74,12 +74,11 @@ At the start of work, inspect the current `@` before choosing a command.
 
 ### `jj commit`
 
-- Treat as a low-frequency convenience command, not the center of the workflow.
 - Without interactive selection or path arguments, it is effectively `jj desc` followed by `jj new`.
 - Use it when two actions are naturally bound together: describe the current change and start the next working-copy change.
 - Use `-i` only when sealing the current `@` while pushing leftover content into the next working-copy change is the clearest move.
 - Prefer `jj split` instead when the real problem is that the existing change boundary is wrong.
-- Do not default to this command just because it sounds like the normal way to finish work.
+- As with `jj new`, check first that `@` is one coherent intent; committing is not a substitute for that check.
 
 ## Decision Rules
 
@@ -89,7 +88,7 @@ Use this order:
 2. If only the description is wrong, use `jj desc`.
 3. If the change is coherent and the next work item is different, use `jj new`.
 4. If the change is not coherent, identify the split boundary, then use `jj split`.
-5. Use `jj commit` only when it is the clearest shorthand for the exact transition you want.
+5. Use `jj commit` when the exact transition you want is "describe `@` and start the next change".
 
 ## Boundary Drift Signals
 
@@ -108,18 +107,18 @@ identify the boundary and repair the mixed change with `jj split`.
 - Prefer `jj desc` as ongoing maintenance.
 - Prefer `jj new` to begin the next atomic change.
 - Prefer `jj split` to repair mixed content.
-- Prefer `jj commit` rarely.
+- Use `jj commit` when describing `@` and opening the next change are one decision.
 
 ## Guardrails
 
 - Do not let unrelated edits accumulate in `@` once the boundary problem is visible.
 - Do not prescribe a rigid sequence of `desc`, `new`, `split`, and `commit`; choose based on the repository state.
-- Do not use `jj commit` as a reflexive "finish work" command.
+- Do not run `jj commit` without checking that `@` is a single coherent intent.
 - Do not treat this skill as the complete repository JJ workflow.
 - Follow repository-specific workflow policy first. In this repository, commands
   such as `jj rebase`, `jj squash`, and `jj abandon` are high-risk and require
   confirmation before execution.
-- Use `jj desc` and `jj new` as normal boundary-maintenance commands.
+- Use `jj desc`, `jj new`, and `jj commit` as boundary-maintenance commands.
 - Use `jj split -i`, `jj commit -i`, or path/fileset-based `jj commit` only
   when the intended selection is clear and the environment supports the
   required interaction. Otherwise, ask or use a clear non-interactive boundary.
@@ -127,21 +126,22 @@ identify the boundary and repair the mixed change with `jj split`.
 
 ## Done State
 
-When a coherent unit of work is complete, prefer creating a fresh working-copy
-change with `jj new`. This protects the completed change from accidental edits
-during follow-up work.
+When a coherent unit of work is complete, leave `@` empty and ready for the next
+task, either with `jj new` or with `jj commit` when the description still needs
+writing. This protects the completed change from accidental edits during
+follow-up work.
 
 - The completed change should contain one intent and have an accurate description.
 - The new `@` should be empty and ready for the next unrelated task.
-- Skip the final `jj new` only if the user explicitly asks to stay on the
+- Skip this final boundary only if the user explicitly asks to stay on the
   completed change or the next action continues the same intent.
 - Verify the final state with `jj --no-pager status`.
 
 ## Quick Examples
 
 - You start work and `@` already matches the task, but the description still names yesterday's scope: run `jj desc`.
-- You finished one coherent change and are about to start a different task: run `jj new` before making the next edit.
+- You finished one coherent change and are about to start a different task: run `jj new` before making the next edit, or `jj commit` if the description still needs writing.
 - You notice `@` now contains a refactor and an unrelated doc cleanup: identify the two intents immediately, then run `jj split` once the boundary is clear.
-- You want one command that both finalizes a coherent current change and leaves you on the next working-copy change: use `jj commit` only if that is clearer than `jj desc` plus `jj new`.
+- You want one command that both finalizes a coherent current change and leaves you on the next working-copy change: run `jj commit`.
 - You complete a coherent change and no further same-intent edits are planned:
-  run `jj new` so later work starts from a fresh empty `@`.
+  run `jj new` (or `jj commit`) so later work starts from a fresh empty `@`.
