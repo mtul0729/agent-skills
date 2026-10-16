@@ -59,6 +59,13 @@ At the start of work, inspect the current `@` before choosing a command.
 - Identify mixed intent immediately instead of postponing cleanup.
 - If the split boundary is unclear, report the candidate intents and pause for
   clarification before running an interactive or path-based split.
+- Without a usable diff editor (as in most agent runs), split by fileset with an
+  inline description instead of `-i`: `jj split -m "<desc>" <fileset>...`.
+  Positional filesets are the selected changes; `-m` sets their description
+  without opening an editor. The selected changes stay in the original
+  revision's position, the remaining changes become a new child commit, and `@`
+  moves to that child. Resolve filesets from the repository root when the working
+  directory is a subdirectory.
 
 ### `jj absorb`
 
@@ -121,7 +128,9 @@ identify the boundary and repair the mixed change with `jj split`.
 - Use `jj desc`, `jj new`, and `jj commit` as boundary-maintenance commands.
 - Use `jj split -i`, `jj commit -i`, or path/fileset-based `jj commit` only
   when the intended selection is clear and the environment supports the
-  required interaction. Otherwise, ask or use a clear non-interactive boundary.
+  required interaction. For a fileset split without an editor, pass the
+  description with `-m` (see `jj split` above). Otherwise, ask or use a clear
+  non-interactive boundary.
 - When exact flags or semantics matter, query live help instead of relying on memory.
 
 ## Done State
