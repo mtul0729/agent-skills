@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nix Package Lookup"
+  short_description: "Find and run Nix packages with nix-index"
+  default_prompt: "Use nix-package-lookup to find the Nix package for a missing command or file."
