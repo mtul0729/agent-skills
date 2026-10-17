@@ -12,9 +12,18 @@ Source of truth for personal agent skills. Skills only — no application code.
 Grouping is by topic, not by agent: a skill lives here because it belongs to a subject
 area (jujutsu, nix), never because it targets a particular client.
 
+The dividing line is transferable method versus one program's API surface. A skill that is
+the manual for a single tool belongs in that tool's repository, where a renamed flag and the
+skill edit land in the same commit — `cosmic-desktop-ops` lives in `cosmic-desktop-mcp` for
+exactly that reason. What belongs here is knowledge that outlives any one binary.
+
 Each skill is a directory holding `SKILL.md` plus optional `agents/`, `references/`, and
 `scripts/` subdirectories. The `description` in front matter is what agents match on — keep
 it accurate and trigger-oriented.
+
+Write skills in **English**. They are read by models that reason in English and are
+shared publicly; mixing languages inside one file costs tokens and invites drift.
+Conversation with the user stays Chinese, the artifacts do not.
 
 ## Source of truth
 
