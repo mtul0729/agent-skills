@@ -36,6 +36,17 @@ Use this skill for runtime command, concept, and troubleshooting help:
 - answer version-specific behavior questions from local `jj help`
 - troubleshoot command usage without hardcoding unstable docs
 
+#### `jj-workspaces`
+
+Use this skill when work needs a second working copy in a jj repository:
+
+- decide between a workspace and `jj new`
+- avoid two agents snapshotting into the same `@`
+- create, use, and remove a workspace without leaving 300 MB behind
+- recover when `jj rebase` refuses to rewrite an immutable commit
+- make a freshly created file visible to `nix flake`
+- reclaim space with `jj util gc` instead of `git gc --prune=now`
+
 #### Setup Note
 
 These skills assume the repository is already managed by jj. For an existing Git
@@ -71,6 +82,8 @@ tool as a Nix package in the sysadmin flake (`systems/nixos/pkgs/*`):
   questions, and done-state behavior.
 - Use `jj-local-help` for command syntax, flags, keyword topics, concepts, and
   installed-version behavior.
+- Use `jj-workspaces` when more than one process will touch the repository, or when
+  cleaning up workspaces left by earlier work.
 - Use both when a workflow decision depends on exact command semantics.
 - Use `nix-package-lookup` for command-not-found and package-provision questions.
 - Use `nix-pkg-npm-cli` when adding a new package under `systems/nixos/pkgs/`.
