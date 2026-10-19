@@ -31,7 +31,13 @@ At the start of work, inspect the current `@` before choosing a command.
 - If the description, parent, or current graph position affects the boundary
   decision, inspect `jj --no-pager log -r @`.
 - If `@` still represents one coherent intent but the description is stale, use `jj desc`.
-- If `@` is coherent and the next task is different, use `jj new` before mixing in unrelated work.
+- If `@` is coherent and the next task should build on it, use `jj new` before
+  mixing in unrelated edits.
+- If the next task is unrelated to the current `@`, prefer `jj new @-` so the new
+  change branches from `@`'s parent instead of stacking on top of unfinished
+  work. Use this especially when `@` belongs to another person or agent; do not
+  edit their working-copy change for a new task, and tell them you are branching
+  from `@-` instead.
 - If `@` already contains multiple intents, identify the separate intents immediately.
   Use `jj split` once the split boundary is clear.
 - Use `jj commit` when describing the current change and starting the next one belong in one step.
@@ -47,9 +53,13 @@ At the start of work, inspect the current `@` before choosing a command.
 
 ### `jj new`
 
-- Use to start a fresh empty change when the current one is coherent and the next work item should not mix into it.
+- Use to start a fresh empty change on top of the current one when the next
+  work item continues from it but should not mix into it.
 - Prefer this over `jj commit` when the current description is already correct.
-- Treat this as the normal way to establish a hard boundary before starting unrelated work.
+- Treat this as the normal way to establish a hard boundary before starting the
+  next work item that builds on the current change.
+- Use `jj new @-` when the new work must be independent of the current `@`;
+  plain `jj new` makes the current `@` the new change's parent.
 
 ### `jj split`
 
@@ -149,7 +159,10 @@ follow-up work.
 ## Quick Examples
 
 - You start work and `@` already matches the task, but the description still names yesterday's scope: run `jj desc`.
-- You finished one coherent change and are about to start a different task: run `jj new` before making the next edit, or `jj commit` if the description still needs writing.
+- You finished one coherent change and are about to start a next task that builds on it: run `jj new` before making the next edit, or `jj commit` if the description still needs writing.
+- The current `@` holds someone else's unfinished work and your task is unrelated:
+  run `jj new @-` to start a sibling change instead of editing or stacking on
+  their `@`.
 - You notice `@` now contains a refactor and an unrelated doc cleanup: identify the two intents immediately, then run `jj split` once the boundary is clear.
 - You want one command that both finalizes a coherent current change and leaves you on the next working-copy change: run `jj commit`.
 - You complete a coherent change and no further same-intent edits are planned:

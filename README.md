@@ -20,6 +20,8 @@ Use this skill to decide what to do with the current `@` while working:
 - spot when boundary drift is already visible
 - prefer `jj new` after completing coherent work so later edits do not pollute
   the finished change
+- start unrelated work from `@-` when the current `@` is someone else's unfinished
+  change
 - handle interactive or path-based split/commit decisions carefully
 - treat `jj commit` as a low-frequency convenience command rather than the center of the workflow
 
