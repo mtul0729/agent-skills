@@ -1,6 +1,6 @@
 ---
 name: jj-workspaces
-description: Use when work needs a second working copy in a Jujutsu repository — parallel agents, a long build that must not block edits, or a dirty default workspace — and when cleaning up the ones that accumulate. Covers `jj workspace add`/`forget`, why `@` collides when two processes share a workspace, what leftover workspaces cost, and the git plumbing to use when `jj rebase` refuses to rewrite an immutable commit.
+description: Use when work needs a second working copy in a Jujutsu repository — parallel agents, a long build that must not block edits, or a dirty default workspace — and when cleaning up the ones that accumulate, rebasing or pushing another workspace's `@`, or repairing a checkout that went stale. Covers `jj workspace add`/`forget`, why `@` collides when two processes share a workspace, why another workspace's change keeps growing under you, what leftover workspaces cost, and the git plumbing to use when `jj rebase` refuses to rewrite an immutable commit.
 ---
 
 # Jj Workspaces
@@ -42,6 +42,36 @@ If it happens, read the operation log — it records the user, host, and workspa
 jj op log --no-graph --limit 10
 jj op show <op-id>
 ```
+
+## Operating on Someone Else's Workspace
+
+Another workspace's `@` is not a snapshot you can reason about once; it is whatever that
+workspace's disk held at your command's snapshot, and it moves between two of your
+commands. Observed live: a colleague session's change grew from one file and 52 lines, to
+two files and 168 lines, to two files and 170 lines over ~25 minutes — two of those lines
+landed during a `jj rebase` I was running on it. The description stayed stale the whole
+time, so the commit message did not tell me the content had changed.
+
+So before you publish a change you did not write:
+
+- **Check that it stopped growing.** Compare `jj diff -r <change> --stat` across a couple
+  of minutes, or check the file mtimes in that workspace directory. A last write seconds
+  ago means you are about to push an editor's intermediate save.
+- **Read the diff, not just the stat.** A coherent change either adds one thing or clearly
+  refactors something (moving an inline procedure out to its own document and leaving a
+  pointer behind is coherent; a half-moved paragraph is not).
+- **Say what you saw** before pushing — the owning session may still be writing, and it
+  cannot otherwise know you froze a point in its work.
+- **Leave their `@` empty afterwards** with `jj new` run in that workspace, so anything they
+  type next lands in a *new* change instead of rewriting what you just published.
+
+Crossing workspaces also affects checkouts:
+
+- Operating on another workspace's `@` from your own workspace leaves that checkout stale.
+  Whoever uses it next is told to run `jj workspace update-stale` (check `jj workspace --help`
+  for availability in the installed version).
+- Rebasing or describing **from inside** that workspace instead updates its checkout in
+  place, so there is nothing stale to repair.
 
 ## Creating
 
@@ -150,4 +180,5 @@ git update-ref -d refs/remotes/<remote>/<branch>
 - [ ] Did you create the workspace at the right base revision?
 - [ ] Is the workspace outside the repository directory?
 - [ ] Before pushing, does the diff contain only the intended files?
+- [ ] If the change is someone else's: has it stopped growing, and did you leave their `@` empty?
 - [ ] After finishing, did you `jj workspace forget`, delete the directory, and prune?
