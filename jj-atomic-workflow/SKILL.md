@@ -1,6 +1,6 @@
 ---
 name: jj-atomic-workflow
-description: Keep Jujutsu changes atomic while working in repositories that expect small, coherent changes. Use when Codex needs to decide how to manage change boundaries during work, especially when choosing among `jj desc`, `jj new`, `jj split`, and `jj commit`, or when the current `@` change may have drifted away from a single intent.
+description: Keep Jujutsu changes atomic while working in repositories that expect small, coherent changes. Use when Codex needs to decide how to manage change boundaries during work, especially when choosing among `jj desc`, `jj new`, `jj split`, and `jj commit`, when the current `@` change may have drifted away from a single intent, or when a change has already been pushed and `@` still accepts edits.
 ---
 
 # Jj Atomic Workflow
@@ -97,6 +97,26 @@ At the start of work, inspect the current `@` before choosing a command.
 - Prefer `jj split` instead when the real problem is that the existing change boundary is wrong.
 - As with `jj new`, check first that `@` is one coherent intent; committing is not a substitute for that check.
 
+## After a Push, `@` Is Still Open
+
+`jj git push` publishes a change; it does not seal it. The working copy stays on the
+same change, so the next edit rewrites the commit that was just published. In a repo
+whose rule is "never rewrite a published commit", every edit made after a push is that
+violation waiting to happen, and it announces itself quietly:
+
+- the next push reports `move sideways from <old> to <new>` instead of moving forward;
+- the change id starts rendering as `(divergent)`, with two commits sharing it;
+- `git merge-base --is-ancestor HEAD <remote>/<branch>` stops holding.
+
+So: **once a change is pushed, run `jj new` before the next edit.** What you find
+later becomes a follow-up change, which is what a reader of that history wants anyway.
+Rewriting a published commit is a separate, deliberate act: everything built on top of it
+has to be rebased, the push becomes a force push, and anyone else on that branch has to
+agree first.
+
+Do not conflate the two: describing does not publish, and publishing does not finalize.
+In both cases the working copy stays on the same open change.
+
 ## Decision Rules
 
 Use this order:
@@ -129,6 +149,7 @@ identify the boundary and repair the mixed change with `jj split`.
 ## Guardrails
 
 - Do not let unrelated edits accumulate in `@` once the boundary problem is visible.
+- Do not edit `@` after it has been pushed; run `jj new` first so the follow-up lands in its own change.
 - Do not prescribe a rigid sequence of `desc`, `new`, `split`, and `commit`; choose based on the repository state.
 - Do not run `jj commit` without checking that `@` is a single coherent intent.
 - Do not treat this skill as the complete repository JJ workflow.
@@ -167,3 +188,6 @@ follow-up work.
 - You want one command that both finalizes a coherent current change and leaves you on the next working-copy change: run `jj commit`.
 - You complete a coherent change and no further same-intent edits are planned:
   run `jj new` (or `jj commit`) so later work starts from a fresh empty `@`.
+- You pushed a change and then noticed one more typo in it: leave it. Run `jj new` and
+  fix it there — patching `@` rewrites the published commit and turns the next push into
+  `move sideways`.
