@@ -3,6 +3,8 @@ name: jj-local-help
 description: Resolve Jujutsu (`jj`) command syntax, flags, subcommands, errors, `-k` keyword topics (revsets, glossary, templates, filesets, bookmarks, config, tutorial), and installed-version behavior from the local `jj` help system instead of remembered docs. Use when a `jj` command fails or reports an unknown option, when checking whether a command, subcommand, or keyword topic exists, when the installed `jj` version may differ from remembered behavior, or when exact command semantics matter.
 ---
 
+# Jj Local Help
+
 ## Reliability Policy (Important)
 
 `jj` evolves quickly. Do not hardcode option/flag details in this file.

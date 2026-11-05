@@ -1,6 +1,6 @@
 ---
 name: jj-atomic-workflow
-description: Keep Jujutsu changes atomic while working in repositories that expect small, coherent changes. Use when Codex needs to decide how to manage change boundaries during work, especially when choosing among `jj desc`, `jj new`, `jj split`, and `jj commit`, when the current `@` change may have drifted away from a single intent, or when a change has already been pushed and `@` still accepts edits.
+description: Keep Jujutsu changes atomic while working in repositories that expect small, coherent changes. Use when an agent needs to decide how to manage change boundaries during work, especially when choosing among `jj desc`, `jj new`, `jj split`, and `jj commit`, when the current `@` change may have drifted away from a single intent, or when a change has already been pushed and `@` still accepts edits.
 ---
 
 # Jj Atomic Workflow

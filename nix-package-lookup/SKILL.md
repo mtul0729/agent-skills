@@ -1,6 +1,6 @@
 ---
 name: nix-package-lookup
-description: Use on NixOS flakes systems when Codex needs to find which Nix package provides a missing command, executable, library, or file; diagnose command-not-found or package lookup issues; or temporarily run a command without adding it permanently to NixOS or Home Manager configuration. Prefer this over guessing package names or using nix-channel workflows.
+description: Use on flake-based NixOS systems when an agent needs to find which Nix package provides a missing command, executable, library, or file; diagnose command-not-found or package lookup issues; or temporarily run a command without adding it permanently to NixOS or Home Manager configuration. Prefer this over guessing package names or using nix-channel workflows.
 ---
 
 # Nix Package Lookup
