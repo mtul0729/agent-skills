@@ -34,6 +34,33 @@ Conversation with the user stays Chinese, the artifacts do not.
   `~/.workbuddy/skills/`, `~/.codex/skills/`. Those are user-managed installs and are
   overwritten on the next sync. Change the source here, then let the user re-sync.
 
+## Cross-agent compatibility
+
+Skills here are deployed to more than one agent. Treat `SKILL.md` as the shared
+contract: keep its instructions and `name` / `description` usable by every
+client, and put client-specific metadata or invocation policy in that client's
+supported location. Do not assume a field understood by one agent has meaning
+in another.
+
+In particular, Codex reads UI metadata and invocation policy from
+`agents/openai.yaml`, while Claude Code reads invocation controls such as
+`disable-model-invocation` from `SKILL.md` frontmatter. A skill that must be
+user-invoked across agents needs both:
+
+```yaml
+# Claude Code, SKILL.md frontmatter
+disable-model-invocation: true
+```
+
+```yaml
+# Codex, agents/openai.yaml
+policy:
+  allow_implicit_invocation: false
+```
+
+Default to model invocation unless the skill is genuinely useful only when the
+human asks for it.
+
 ## Commit Guidelines
 
 - Subject: `<topic>: <summary>`, for example `skills: document track-editing`. Topics in use:
