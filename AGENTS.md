@@ -61,6 +61,14 @@ policy:
 Default to model invocation unless the skill is genuinely useful only when the
 human asks for it.
 
+Upstream specifications, when checking whether a field or front matter rule
+exists and what it means:
+
+- Agent Skills format: <https://agentskills.io/specification>
+- Codex skills: <https://developers.openai.com/codex/skills>
+- Codex skill authoring: <https://developers.openai.com/codex/skills/create-skill>
+- Claude Code skills: <https://code.claude.com/docs/en/skills>
+
 ## Commit Guidelines
 
 - Subject: `<topic>: <summary>`, for example `skills: document track-editing`. Topics in use:
