@@ -127,6 +127,10 @@ Most commands take an installable: `nixpkgs#hello` (registry), `.#attr`
 (current flake), `github:owner/repo#attr`, or a store path. `--` separates the
 installable from the program's arguments in `nix run`.
 
+For one-off tools and apps, use the `nix-temporary-tools` skill; the short
+rule is `nix shell nixpkgs#<pkg> -c <cmd>` or
+`nix run nixpkgs#<app> -- <args>`. Neither changes the system or profile.
+
 For the command map, state-changing commands, legacy equivalents, and gotchas,
 read `references/nix-cli.md`.
 

@@ -41,6 +41,9 @@ nix shell nixpkgs#jq -c jq --version
 nix shell nixpkgs#dnsutils -c dig example.com
 ```
 
+See `nix-temporary-tools` for `nix shell` vs `nix run` vs `nix develop`,
+pipelines, and the temporary/persistent boundary.
+
 Use `comma` only as an interactive convenience when ambiguity is low:
 
 ```bash

@@ -35,6 +35,14 @@ nix run nixpkgs#hello -- --help
 nix shell nixpkgs#jq -c jq --version
 ```
 
+## Temporary commands
+
+See the `nix-temporary-tools` skill for `nix shell`, `nix run`, `nix develop`,
+pipelines, and the temporary/persistent boundary. Short version:
+`nix shell nixpkgs#<pkg> -c <cmd>` for a tool,
+`nix run nixpkgs#<app> -- <args>` for an app; both are temporary and need no
+root.
+
 ## Task map
 
 | Want | Command |
@@ -82,8 +90,8 @@ nix shell
 nix develop
 ```
 
-Imperative profile commands (`nix profile`, `nix-env`) change a profile.
-Avoid them on a managed system; persist tools in the config instead.
+Imperative profile commands change a profile. Avoid them on a managed system;
+persist tools in the config instead.
 
 These change the NixOS system:
 

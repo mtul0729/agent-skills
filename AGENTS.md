@@ -7,6 +7,7 @@ Source of truth for personal agent skills. Skills only — no application code.
 - `jj-atomic-workflow/` — change-boundary decisions while working in a jj-backed repo
 - `jj-local-help/` — jj command syntax, flags, keyword topics, concepts, troubleshooting
 - `jj-workspaces/` — when to use a second working copy, how to avoid `@` collisions, and how to clean up
+- `nix-temporary-tools/` — run a command or app for one task without installing it, and decide when to persist it
 - `nixos-system-model/` — how NixOS differs from a conventional Linux system, and how to make changes survive a rebuild
 - `nix-package-lookup/` — find the Nix package behind a missing command/library/file, and run it temporarily
 - `nix-pkg-npm-cli/` — package an npm/Node-distributed CLI or MCP server as a Nix package in the sysadmin flake

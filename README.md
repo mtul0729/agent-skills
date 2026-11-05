@@ -57,6 +57,18 @@ not part of the normal agent workflow.
 
 ### Nix
 
+#### `nix-temporary-tools`
+
+Use this skill when a command, tool, or app is needed for one task:
+
+- use `nix shell nixpkgs#pkg -c cmd` for one-off commands
+- use `nix run nixpkgs#app -- args` for an app, and `--` for its arguments
+- wrap pipelines in `-c bash -c '...'`
+- choose between `nix shell`, `nix run`, `nix develop`, and `nix build`
+- decide when to stop being temporary: `home.packages` or
+  `environment.systemPackages`
+- keep registry (`nixpkgs#`) and pinned flake (`.#`) package sets straight
+
 #### `nixos-system-model`
 
 Use this skill whenever you touch a NixOS machine or flake:
@@ -104,6 +116,8 @@ tool as a Nix package in the sysadmin flake (`systems/nixos/pkgs/*`):
 - Use `jj-workspaces` when more than one process will touch the repository, or when
   cleaning up workspaces left by earlier work.
 - Use both when a workflow decision depends on exact command semantics.
+- Use `nix-temporary-tools` when a command is needed for one task; it keeps
+  one-off tools out of the system config.
 - Use `nixos-system-model` before changing a NixOS machine, so traditional
   Linux reflexes are translated into options and a rebuild.
 - Use `nix-package-lookup` for command-not-found and package-provision questions.
