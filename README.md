@@ -57,6 +57,23 @@ not part of the normal agent workflow.
 
 ### Nix
 
+#### `nixos-system-model`
+
+Use this skill whenever you touch a NixOS machine or flake:
+
+- treat the running system as a build output, not editable state
+- locate the config source and the running closure before changing anything
+- find the option that owns a concern with `nixos-option`,
+  `man configuration.nix`, `nix eval`, or an MCP such as `mcp-nixos`
+- translate traditional Linux actions (apt, `/etc` edits, `systemctl enable`,
+  crontab, fstab, iptables) into module options
+- understand option merging, `mkDefault` / `mkForce`, and overlays
+- separate evaluation, build, activation, and generation rollback
+- keep mutable state and secrets outside the Nix store
+- debug from a generated unit or store path back to the module
+- understand the `nix` CLI itself: installables, common subcommands, legacy
+  equivalents, and which commands change state
+
 #### `nix-package-lookup`
 
 Use this skill when a command, library, or file is missing and you need to know
@@ -87,6 +104,8 @@ tool as a Nix package in the sysadmin flake (`systems/nixos/pkgs/*`):
 - Use `jj-workspaces` when more than one process will touch the repository, or when
   cleaning up workspaces left by earlier work.
 - Use both when a workflow decision depends on exact command semantics.
+- Use `nixos-system-model` before changing a NixOS machine, so traditional
+  Linux reflexes are translated into options and a rebuild.
 - Use `nix-package-lookup` for command-not-found and package-provision questions.
 - Use `nix-pkg-npm-cli` when adding a new package under `systems/nixos/pkgs/`.
 
@@ -97,6 +116,13 @@ short note such as:
 
 ```markdown
 When working in this jj repository, use the `jj-atomic-workflow` skill for change-boundary decisions and the `jj-local-help` skill for command syntax, flags, installed-version behavior, and safe handling of concurrent/stale/reconciled repo state; only parallelize read-only `jj` commands, treat all other `jj` commands as serial, and refresh repo state after stale/concurrent/reconcile/divergent output.
+```
+
+For NixOS repositories, point agents at `nixos-system-model` before they
+change packages, services, users, networking, boot, or generated files:
+
+```markdown
+When changing a NixOS system, use the `nixos-system-model` skill: the config is the source of truth, generated files and units are outputs, and a change is not done until it is in a module and the new generation is verified.
 ```
 
 ## Portability Note
