@@ -96,17 +96,6 @@ which Nix package provides it:
 - decide when a tool should move into NixOS or Home Manager configuration instead
 - avoid `nix-channel --update` workflows on this flakes + `nix-index-database` system
 
-#### `nix-pkg-npm-cli`
-
-Use this skill when packaging an npm/Node-distributed CLI, MCP server, or agent
-tool as a Nix package in the sysadmin flake (`systems/nixos/pkgs/*`):
-
-- decide between `buildNpmPackage` and a prebuilt-tarball assembly
-- compute the `src` hash and `npmDepsHash` without network surprises
-- follow the repository's `default.nix` + `update.py` contract
-- audit the dependency tree for install-script side effects before building
-- verify with a real build rather than static checks alone
-
 ## Recommended Use
 
 - Use `jj-atomic-workflow` for change-boundary decisions, current `@`
@@ -121,7 +110,6 @@ tool as a Nix package in the sysadmin flake (`systems/nixos/pkgs/*`):
 - Use `nixos-system-model` before changing a NixOS machine, so traditional
   Linux reflexes are translated into options and a rebuild.
 - Use `nix-package-lookup` for command-not-found and package-provision questions.
-- Use `nix-pkg-npm-cli` when adding a new package under `systems/nixos/pkgs/`.
 
 ## Recommended AGENTS.md Guidance
 
