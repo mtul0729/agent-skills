@@ -96,6 +96,20 @@ which Nix package provides it:
 - decide when a tool should move into NixOS or Home Manager configuration instead
 - avoid `nix-channel --update` workflows on this flakes + `nix-index-database` system
 
+### System design
+
+#### `sync-debt`
+
+Use this skill while designing a system whose parts must evolve together:
+
+- find the places where one change requires another and nothing errors when you forget
+- keep a ledger of only the couplings no automated check covers yet
+- for each entry, name the check that will replace it and the artifact that unblocks that check
+- write the cheap check immediately, then delete the row
+- keep the ledger shrinking; its length is the number of unguarded couplings
+- recognize the patterns: producer/consumer, one rule in two implementations,
+  chained invariants, one fact in several documents, serialized state formats
+
 ## Recommended Use
 
 - Use `jj-atomic-workflow` for change-boundary decisions, current `@`
@@ -110,6 +124,8 @@ which Nix package provides it:
 - Use `nixos-system-model` before changing a NixOS machine, so traditional
   Linux reflexes are translated into options and a rebuild.
 - Use `nix-package-lookup` for command-not-found and package-provision questions.
+- Use `sync-debt` when a change spans schema, code, prompts, or docs, so silent
+  drift becomes a check instead of a review habit.
 
 ## Recommended AGENTS.md Guidance
 
